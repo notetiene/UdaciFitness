@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { getMetricMetaInfo } from '../utils/helpers';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import {
+  getMetricMetaInfo,
+  timeToString,
+} from '../utils/helpers';
 import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciSteppers';
 import DateHeader from './DateHeader';
 
+const defaultState = {
+  run: 0,
+  bike: 0,
+  swim: 0,
+  sleep: 0,
+  eat: 0,
+};
+
+function SubmitButton({ onPress }) {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+    >
+      <Text>Submit</Text>
+    </TouchableOpacity>
+  );
+}
+
 export default function AddEntry() {
-  const [state, setState] = useState({
-    run: 0,
-    bike: 0,
-    swim: 0,
-    sleep: 0,
-    eat: 0,
-  });
+  const [state, setState] = useState(defaultState);
 
   const increment = (metric) => {
     const { max, step } = getMetricMetaInfo(metric);
@@ -40,6 +59,22 @@ export default function AddEntry() {
       [metric]: value,
     });
   };
+
+  const submit = () => {
+    const key = timeToString();
+    const entry = state;
+
+    // Update Redux
+
+    setState(defaultState);
+
+    // Navigate to Home
+
+    // Save to DB
+
+    // Clear the local notification
+  };
+
   const metaInfo = getMetricMetaInfo();
 
   return (
@@ -86,6 +121,10 @@ export default function AddEntry() {
           </View>
         );
       })}
+
+      <SubmitButton
+        onPress={submit}
+      />
     </View>
   );
 }
