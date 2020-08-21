@@ -8,3 +8,10 @@ export const UdaciSliderPropType = PropTypes.exact({
   value: PropTypes.number,
   onChange: PropTypes.func,
 }).isRequired;
+
+export const UdaciSteppersPropType = PropTypes.exact({
+  unit: PropTypes.string,
+  value: PropTypes.number,
+  increment: PropTypes.func,
+  decrement: PropTypes.func,
+}).isRequired;
