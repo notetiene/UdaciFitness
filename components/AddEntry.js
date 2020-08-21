@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
+import PropTypes from 'prop-types';
+import { Ionicons } from '@expo/vector-icons';
 import {
   getMetricMetaInfo,
   timeToString,
@@ -11,6 +13,7 @@ import {
 import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciSteppers';
 import DateHeader from './DateHeader';
+import TextButton from './TextButton';
 
 const defaultState = {
   run: 0,
@@ -30,8 +33,39 @@ function SubmitButton({ onPress }) {
   );
 }
 
-export default function AddEntry() {
+SubmitButton.propTypes = {
+  onPress: PropTypes.func.isRequired,
+};
+
+export default function AddEntry({ alreadyLogged }) {
   const [state, setState] = useState(defaultState);
+
+  const reset = () => {
+    const key = timeToString();
+
+    // Update Redux
+
+    // Route to home
+
+    // Update DB
+  };
+
+  if (alreadyLogged) {
+    return (
+      <View>
+        <Ionicons
+          name="ios-happy-outline"
+          size={100}
+        />
+        <Text>
+          You already logged your information for today
+        </Text>
+        <TextButton onPress={reset}>
+          Reset
+        </TextButton>
+      </View>
+    );
+  }
 
   const increment = (metric) => {
     const { max, step } = getMetricMetaInfo(metric);
@@ -128,3 +162,7 @@ export default function AddEntry() {
     </View>
   );
 }
+
+AddEntry.propTypes = {
+  alreadyLogged: PropTypes.bool.isRequired,
+};
