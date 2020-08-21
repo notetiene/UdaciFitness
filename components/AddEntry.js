@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { getMetricMetaInfo } from '../utils/helpers';
+import UdaciSlider from './UdaciSlider';
+import UdaciSteppers from './UdaciSteppers';
 
 export default function AddEntry() {
   const [state, setState] = useState({
@@ -37,10 +39,49 @@ export default function AddEntry() {
       [metric]: value,
     });
   };
+  const metaInfo = getMetricMetaInfo();
 
   return (
     <View>
-      {getMetricMetaInfo('bike').getIcon()}
+      {Object.keys(metaInfo).map((key) => {
+        const {
+          getIcon,
+          type,
+          displayName,
+          max,
+          unit,
+          step,
+        } = metaInfo[key];
+        const value = state[key];
+
+        return (
+          <View key={key}>
+            {getIcon()}
+            {type === 'slider'
+              ? (
+                <UdaciSlider
+                  value={value}
+                  onChange={(val) => slide(key, val)}
+                  displayName={displayName}
+                  max={max}
+                  unit={unit}
+                  step={step}
+                />
+              )
+              : (
+                <UdaciSteppers
+                  value={value}
+                  onIncrement={() => increment(key)}
+                  onDecrement={() => decrement(key)}
+                  displayName={displayName}
+                  max={max}
+                  unit={unit}
+                  step={step}
+                />
+              )}
+          </View>
+        );
+      })}
     </View>
   );
 }
