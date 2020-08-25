@@ -14,6 +14,10 @@ import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciSteppers';
 import DateHeader from './DateHeader';
 import TextButton from './TextButton';
+import {
+  submitEntry,
+  removeEntry,
+} from '../utils/api';
 
 const defaultState = {
   run: 0,
@@ -47,7 +51,7 @@ export default function AddEntry({ alreadyLogged }) {
 
     // Route to home
 
-    // Update DB
+    removeEntry(key);
   };
 
   if (alreadyLogged) {
@@ -104,7 +108,7 @@ export default function AddEntry({ alreadyLogged }) {
 
     // Navigate to Home
 
-    // Save to DB
+    submitEntry({ key, entry});
 
     // Clear the local notification
   };
