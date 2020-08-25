@@ -58,7 +58,7 @@ export default function AddEntry({ alreadyLogged }) {
     return (
       <View>
         <Ionicons
-          name="ios-happy-outline"
+          name="ios-happy"
           size={100}
         />
         <Text>
