@@ -5,6 +5,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import AddEntry from './components/AddEntry';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,9 +21,11 @@ const styles = StyleSheet.create({
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar />
-      <AddEntry />
-    </View>
+    <Provider store={createStore(reducer)}>
+      <View style={styles.container}>
+        <StatusBar />
+        <AddEntry />
+      </View>
+    </Provider>
   );
 }
