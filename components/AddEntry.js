@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   getMetricMetaInfo,
   timeToString,
+  getDailyReminderValue,
 } from '../utils/helpers';
 import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciSteppers';
@@ -18,6 +19,8 @@ import {
   submitEntry,
   removeEntry,
 } from '../utils/api';
+import { connect } from 'react-redux';
+import { addEntry } from '../actions';
 
 const defaultState = {
   run: 0,
@@ -41,13 +44,16 @@ SubmitButton.propTypes = {
   onPress: PropTypes.func.isRequired,
 };
 
-export default function AddEntry({ alreadyLogged }) {
+function AddEntry({ alreadyLogged, doAddEntry }) {
   const [state, setState] = useState(defaultState);
 
   const reset = () => {
     const key = timeToString();
 
-    // Update Redux
+    debugger;
+    doAddEntry({
+      [key]: getDailyReminderValue(),
+    });
 
     // Route to home
 
@@ -102,7 +108,9 @@ export default function AddEntry({ alreadyLogged }) {
     const key = timeToString();
     const entry = state;
 
-    // Update Redux
+    doAddEntry({
+      [key]: entry,
+    });
 
     setState(defaultState);
 
@@ -170,3 +178,15 @@ export default function AddEntry({ alreadyLogged }) {
 AddEntry.propTypes = {
   alreadyLogged: PropTypes.bool.isRequired,
 };
+
+function mapStateToProps(state) {
+  const key = timeToString();
+
+  return {
+    alreadyLogged: state[key] && typeof state[key].today === 'undefined',
+  };
+}
+
+export default connect(mapStateToProps, {
+  doAddEntry: addEntry,
+})(AddEntry);
