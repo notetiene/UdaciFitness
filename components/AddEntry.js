@@ -124,6 +124,9 @@ function AddEntry({ alreadyLogged, doAddEntry }) {
 
   return (
     <View>
+      <DateHeader
+        date={(new Date()).toLocaleDateString()}
+      />
       {Object.keys(metaInfo).map((key) => {
         const {
           getIcon,
@@ -137,9 +140,6 @@ function AddEntry({ alreadyLogged, doAddEntry }) {
 
         return (
           <View key={key}>
-            <DateHeader
-              date={(new Date()).toLocaleDateString()}
-            />
             {getIcon()}
             {type === 'slider'
               ? (
