@@ -5,6 +5,7 @@ import {
   Text,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import {
   getMetricMetaInfo,
@@ -19,7 +20,6 @@ import {
   submitEntry,
   removeEntry,
 } from '../utils/api';
-import { connect } from 'react-redux';
 import { addEntry } from '../actions';
 
 const defaultState = {
@@ -50,7 +50,6 @@ function AddEntry({ alreadyLogged, doAddEntry }) {
   const reset = () => {
     const key = timeToString();
 
-    debugger;
     doAddEntry({
       [key]: getDailyReminderValue(),
     });
@@ -177,13 +176,14 @@ function AddEntry({ alreadyLogged, doAddEntry }) {
 
 AddEntry.propTypes = {
   alreadyLogged: PropTypes.bool.isRequired,
+  doAddEntry: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   const key = timeToString();
 
   return {
-    alreadyLogged: state[key] && typeof state[key].today === 'undefined',
+    alreadyLogged: (state[key] && typeof state[key].today === 'undefined') || false,
   };
 }
 
