@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { AppLoading } from 'expo';
 import UdaciFitnessCalendar from './UdaciFitnessCalendar';
 import { receiveEntries, addEntry } from '../actions';
 import { timeToString, getDailyReminderValue } from '../utils/helpers';
@@ -85,6 +86,8 @@ const renderEmptyDate = (formattedDate) => (
 );
 
 function History({ actualEntries, doReceiveEntries, doAddEntry }) {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
     fetchCalendarResults()
       .then(doReceiveEntries)
@@ -94,8 +97,15 @@ function History({ actualEntries, doReceiveEntries, doAddEntry }) {
             [timeToString()]: getDailyReminderValue(),
           });
         }
-      });
+      })
+      .then(() => setReady(true));
   }, [doAddEntry, doReceiveEntries]);
+
+  if (ready === false) {
+    return (
+      <AppLoading />
+    );
+  }
 
   return (
     <UdaciFitnessCalendar
