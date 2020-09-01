@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Calendar } from 'react-native-calendars';
 import { timeToString } from '../utils/helpers';
+import { purple, white } from '../utils/colors';
 
 export default function UdaciFitnessCalendar({
   items,
@@ -26,6 +27,12 @@ export default function UdaciFitnessCalendar({
         markedDates={markedDates}
         maxDate={timeToString()}
         onDayPress={handleDateChange}
+        theme={{
+          arrowColor: purple,
+          selectedDayBackgroundColor: purple,
+          dotColor: purple,
+          selectedDotColor: white,
+        }}
         enableSwipeMonths
       />
       {(items[selectedDate] && renderItem(items[selectedDate]))
