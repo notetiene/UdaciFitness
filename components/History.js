@@ -2,9 +2,25 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import UdaciFitnessCalendar from './UdaciFitnessCalendar';
 import { receiveEntries, addEntry } from '../actions';
 import { timeToString, getDailyReminderValue } from '../utils/helpers';
 import { fetchCalendarResults } from '../utils/api';
+
+const renderItem = ({ today, ...metrics }, formattedDate, key) => (
+  <View
+    key={key}
+  >
+    {today
+      ? <Text>{JSON.stringify(today)}</Text>
+      : <Text>{JSON.stringify(metrics)}</Text>}
+  </View>
+);
+const renderEmptyDate = () => (
+  <View>
+    <Text>No Data for this day</Text>
+  </View>
+);
 
 function History({ actualEntries, doReceiveEntries, doAddEntry }) {
   useEffect(() => {
@@ -20,9 +36,11 @@ function History({ actualEntries, doReceiveEntries, doAddEntry }) {
   }, [doAddEntry, doReceiveEntries]);
 
   return (
-    <View>
-      <Text>{JSON.stringify(actualEntries)}</Text>
-    </View>
+    <UdaciFitnessCalendar
+      items={actualEntries}
+      renderItem={renderItem}
+      renderEmptyDate={renderEmptyDate}
+    />
   );
 }
 
