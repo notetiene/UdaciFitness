@@ -5,6 +5,15 @@ import { Calendar } from 'react-native-calendars';
 import { timeToString } from '../utils/helpers';
 import { purple, white } from '../utils/colors';
 
+const transformDate = (date) => {
+  const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long', day: '2-digit' });
+  const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(
+    new Date(date),
+  );
+
+  return `${month} ${day}, ${year}`;
+};
+
 export default function UdaciFitnessCalendar({
   items,
   renderItem,
@@ -35,8 +44,14 @@ export default function UdaciFitnessCalendar({
         }}
         enableSwipeMonths
       />
-      {(items[selectedDate] && renderItem(items[selectedDate]))
-       || renderEmptyDate(items[selectedDate])}
+      <View>
+        {(items[selectedDate] && renderItem(
+          items[selectedDate],
+          transformDate(selectedDate),
+          selectedDate,
+        ))
+         || renderEmptyDate(transformDate(selectedDate))}
+      </View>
     </View>
   );
 }
