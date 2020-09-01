@@ -40,7 +40,7 @@ function setDummyData() {
 function setMissingDates(dates) {
   // const { length } = Object.keys(dates);
   const timestamp = Date.now();
-  const dateList = [...dates];
+  const dateList = { ...dates };
 
   for (let i = -183; i < 0; i += 1) {
     const time = timestamp + i * 24 * 60 * 60 * 1000;
